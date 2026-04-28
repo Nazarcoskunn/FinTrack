@@ -1,7 +1,7 @@
-// Service layer burada.
-// Amaç: business logic'i repository'den ayırmak.
-// Stock ile ilgili işlemleri (ekleme, silme, fiyat güncelleme, analiz)
-// burada yapıyorum, repository sadece database ile ilgileniyor.
+// Service layer is used here.
+// The goal is to separate business logic from the repository.
+// All stock-related operations (add, delete, price update, analytics)
+// are handled here, while the repository only deals with database operations.
 
 using FinTrack.Application.DTOs;
 using FinTrack.Application.Interfaces;
