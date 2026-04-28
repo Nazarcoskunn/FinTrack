@@ -1,3 +1,6 @@
+using FinTrack.Application.Interfaces;
+using FinTrack.Infrastructure.Repositories;
+using FinTrack.Infrastructure.Services;
 using FinTrack.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<IStockService, StockService>();
 
 var app = builder.Build();
 
