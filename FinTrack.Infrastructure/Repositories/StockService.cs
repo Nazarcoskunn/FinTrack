@@ -1,25 +1,30 @@
-// Service layer is used here.
-// The goal is to separate business logic from the repository.
-// All stock-related operations (add, delete, price update, analytics)
-// are handled here, while the repository only deals with database operations.
+// Service layer here.
+// My goal is to separate business logic from the repository.
+// I handle all stock-related operations here, repository only deals with db.
 
 using FinTrack.Application.DTOs;
 using FinTrack.Application.Interfaces;
 using FinTrack.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace FinTrack.Infrastructure.Services
 {
     public class StockService : IStockService
     {
         private readonly IStockRepository _stockRepository;
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _config;
 
-        public StockService(IStockRepository stockRepository)
+        public StockService(IStockRepository stockRepository, HttpClient httpClient, IConfiguration config)
         {
             _stockRepository = stockRepository;
+            _httpClient = httpClient;
+            _config = config;
         }
 
         public async Task<List<StockDto>> GetAllStocksAsync()
         {
+            // getting all stocks and mapping to dto
             var stocks = await _stockRepository.GetAllAsync();
 
             return stocks.Select(s => new StockDto
@@ -32,6 +37,8 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task AddStockAsync(CreateStockDto dto)
         {
+            // converting dto to entity
+            // making symbol uppercase
             var stock = new Stock
             {
                 Symbol = dto.Symbol.ToUpper(),
@@ -43,14 +50,24 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task DeleteStockAsync(int id)
         {
+            // deleting stock by id
             await _stockRepository.DeleteAsync(id);
         }
 
         public async Task<decimal> RefreshStockPriceAsync(string symbol)
         {
-            // Temporary fake price. Finnhub API will replace this later.
-            var price = new Random().Next(100, 500);
+            // getting real price from finnhub api
+            var apiKey = _config["Finnhub:ApiKey"];
 
+            var url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={apiKey}";
+
+            var response = await _httpClient.GetStringAsync(url);
+
+            var json = System.Text.Json.JsonDocument.Parse(response);
+
+            var price = json.RootElement.GetProperty("c").GetDecimal();
+
+            // saving fetched price to database
             await _stockRepository.SavePriceAsync(symbol.ToUpper(), price);
 
             return price;
@@ -58,6 +75,7 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task<List<object>> GetTopGainersAsync()
         {
+            // using fake data for now, can be improved later
             var stocks = await _stockRepository.GetAllAsync();
 
             return stocks
@@ -74,6 +92,7 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task<List<object>> GetTopLosersAsync()
         {
+            // using fake data for now, can be improved later
             var stocks = await _stockRepository.GetAllAsync();
 
             return stocks

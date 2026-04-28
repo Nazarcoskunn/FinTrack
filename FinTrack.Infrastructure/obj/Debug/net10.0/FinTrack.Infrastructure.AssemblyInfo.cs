@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FinTrack.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0c11c3330a4446f911428b8f06b6e8964248674")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7146d16ed9d104305663849910c0046875dfc196")]
 [assembly: System.Reflection.AssemblyProductAttribute("FinTrack.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FinTrack.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
