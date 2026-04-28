@@ -1,2 +1,6 @@
 <Solution>
+  <Project Path="FinTrack.API/FinTrack.API.csproj" />
+  <Project Path="FinTrack.Application/FinTrack.Application.csproj" />
+  <Project Path="FinTrack.Domain/FinTrack.Domain.csproj" />
+  <Project Path="FinTrack.Infrastructure/FinTrack.Infrastructure.csproj" />
 </Solution>
