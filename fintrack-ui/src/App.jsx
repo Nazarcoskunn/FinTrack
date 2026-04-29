@@ -1,8 +1,8 @@
 import { useState } from "react";
-import StockForm from "./components/StockForm";
-import StockList from "./components/StockList";
-import DashboardStats from "./components/DashboardStats";
-import AveragePrices from "./components/AveragePrices";
+import StockForm from "./Components/StockForm";
+import StockList from "./Components/StockList";
+import DashboardStats from "./Components/DashboardStats";
+import AveragePrices from "./Components/AveragePrices";
 import "./App.css";
 
 // Main application component
