@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
-function AveragePrices() {
+function AveragePrices({ refresh }) {
   const [averagePrices, setAveragePrices] = useState([]);
 
-  useEffect(() => {
-    const fetchAveragePrices = async () => {
-      try {
-        const res = await api.get("/stocks/average-prices");
-        setAveragePrices(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+ useEffect(() => {
+  const fetchAveragePrices = async () => {
+    try {
+      const res = await api.get("/stocks/average-prices");
+      setAveragePrices(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    fetchAveragePrices();
-  }, []);
-
+  fetchAveragePrices();
+}, [refresh]);
   return (
     <div>
       <h2>Average Prices</h2>

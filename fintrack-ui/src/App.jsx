@@ -28,7 +28,7 @@ return (
     </div>
 
     <div className="card">
-      <AveragePrices key={refresh} />
+   <AveragePrices refresh={refresh} /> 
     </div>
   </div>
 );
