@@ -1,6 +1,7 @@
-// Service layer here.
-// My goal is to separate business logic from the repository.
-// I handle all stock-related operations here, repository only deals with db.
+// Service layer is used here.
+// The goal is to separate business logic from the repository.
+// All stock-related operations (add, delete, price update, analytics)
+// are handled here, while the repository only deals with database operations.
 
 using FinTrack.Application.DTOs;
 using FinTrack.Application.Interfaces;
@@ -24,7 +25,6 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task<List<StockDto>> GetAllStocksAsync()
         {
-            // getting all stocks and mapping to dto
             var stocks = await _stockRepository.GetAllAsync();
 
             return stocks.Select(s => new StockDto
@@ -37,8 +37,6 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task AddStockAsync(CreateStockDto dto)
         {
-            // converting dto to entity
-            // making symbol uppercase
             var stock = new Stock
             {
                 Symbol = dto.Symbol.ToUpper(),
@@ -50,32 +48,27 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task DeleteStockAsync(int id)
         {
-            // deleting stock by id
             await _stockRepository.DeleteAsync(id);
         }
-
         public async Task<decimal> RefreshStockPriceAsync(string symbol)
         {
-            // getting real price from finnhub api
-            var apiKey = _config["Finnhub:ApiKey"];
+             var apiKey = _config["Finnhub:ApiKey"];
 
-            var url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={apiKey}";
+             var url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={apiKey}";
 
-            var response = await _httpClient.GetStringAsync(url);
+             var response = await _httpClient.GetStringAsync(url);
 
-            var json = System.Text.Json.JsonDocument.Parse(response);
+             var json = System.Text.Json.JsonDocument.Parse(response);
 
-            var price = json.RootElement.GetProperty("c").GetDecimal();
+             var price = json.RootElement.GetProperty("c").GetDecimal();
 
-            // saving fetched price to database
-            await _stockRepository.SavePriceAsync(symbol.ToUpper(), price);
+             await _stockRepository.SavePriceAsync(symbol.ToUpper(), price);
 
-            return price;
+             return price;
         }
 
         public async Task<List<object>> GetTopGainersAsync()
         {
-            // using fake data for now, can be improved later
             var stocks = await _stockRepository.GetAllAsync();
 
             return stocks
@@ -92,7 +85,6 @@ namespace FinTrack.Infrastructure.Services
 
         public async Task<List<object>> GetTopLosersAsync()
         {
-            // using fake data for now, can be improved later
             var stocks = await _stockRepository.GetAllAsync();
 
             return stocks
@@ -106,5 +98,41 @@ namespace FinTrack.Infrastructure.Services
                 .Cast<object>()
                 .ToList();
         }
+
+
+// This method calculates the average price for each stock.
+// Goal: to show that I can process data, not just fetch it.
+// I take price history from StockPrice table and calculate the average.
+
+ public async Task<List<object>> GetAveragePricesAsync()
+{
+  
+    var stocks = await _stockRepository.GetAllAsync();
+
+    var result = stocks
+        .Select(s =>
+        {
+         
+            if (s.Prices == null || s.Prices.Count == 0)
+                return null;
+
+            // calculate average price
+            var avg = s.Prices.Average(p => p.Price);
+
+          
+            return new
+            {
+                Symbol = s.Symbol,
+                AveragePrice = Math.Round(avg, 2)
+            };
+        })
+    
+        .Where(x => x != null)
+      
+        .Cast<object>()
+        .ToList();
+
+    return result;
+}
     }
 }

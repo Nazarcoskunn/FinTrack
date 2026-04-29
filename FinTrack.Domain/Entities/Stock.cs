@@ -12,5 +12,6 @@ namespace FinTrack.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public List<StockPrice> Prices { get; set; } = new();
+       
     }
 }

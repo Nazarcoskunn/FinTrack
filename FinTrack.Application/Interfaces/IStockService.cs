@@ -15,5 +15,6 @@ namespace FinTrack.Application.Interfaces
 
         Task<List<object>> GetTopGainersAsync();
         Task<List<object>> GetTopLosersAsync();
+        Task<List<object>> GetAveragePricesAsync();
     }
 }

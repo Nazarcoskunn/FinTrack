@@ -56,5 +56,11 @@ namespace FinTrack.API.Controllers
             var result = await _stockService.GetTopLosersAsync();
             return Ok(result);
         }
+        [HttpGet("average-prices")]
+public async Task<IActionResult> GetAveragePrices()
+{
+    var result = await _stockService.GetAveragePricesAsync();
+    return Ok(result);
+}
     }
 }
