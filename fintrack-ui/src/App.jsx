@@ -1,6 +1,8 @@
 import { useState } from "react";
 import StockForm from "./components/StockForm";
 import StockList from "./components/StockList";
+import AveragePrices from "./components/AveragePrices";
+
 
 function App() {
   const [refresh, setRefresh] = useState(false);
@@ -16,6 +18,7 @@ function App() {
       <StockForm onStockAdded={handleStockAdded} />
 
       <StockList key={refresh} />
+      <AveragePrices key={refresh} />
     </div>
   );
 }
