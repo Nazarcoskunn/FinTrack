@@ -5,9 +5,9 @@ namespace FinTrack.Domain.Entities
     {
         public int Id { get; set; }
 
-        public string Symbol { get; set; } = null!; // AAPL
+        public string Symbol { get; set; } = null!; 
 
-        public string Name { get; set; } = null!; // Apple Inc.
+        public string Name { get; set; } = null!; 
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -52,19 +52,20 @@ namespace FinTrack.Infrastructure.Services
         }
         public async Task<decimal> RefreshStockPriceAsync(string symbol)
         {
-             var apiKey = Environment.GetEnvironmentVariable("FINNHUB_API_KEY");
+            // getting API key from environment variable for security
+            var apiKey = Environment.GetEnvironmentVariable("FINNHUB_API_KEY");
+            // fetching real-time stock price from Finnhub API
+            var url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={apiKey}";
 
-             var url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={apiKey}";
+            var response = await _httpClient.GetStringAsync(url);
 
-             var response = await _httpClient.GetStringAsync(url);
+            var json = System.Text.Json.JsonDocument.Parse(response);
 
-             var json = System.Text.Json.JsonDocument.Parse(response);
+            var price = json.RootElement.GetProperty("c").GetDecimal();
 
-             var price = json.RootElement.GetProperty("c").GetDecimal();
+            await _stockRepository.SavePriceAsync(symbol.ToUpper(), price);
 
-             await _stockRepository.SavePriceAsync(symbol.ToUpper(), price);
-
-             return price;
+            return price;
         }
 
         public async Task<List<object>> GetTopGainersAsync()
@@ -100,39 +101,39 @@ namespace FinTrack.Infrastructure.Services
         }
 
 
-// This method calculates the average price for each stock.
-// Goal: to show that I can process data, not just fetch it.
-// I take price history from StockPrice table and calculate the average.
+        // This method calculates the average price for each stock.
+        // Goal: to show that I can process data, not just fetch it.
+        // I take price history from StockPrice table and calculate the average.
 
- public async Task<List<object>> GetAveragePricesAsync()
-{
-  
-    var stocks = await _stockRepository.GetAllAsync();
-
-    var result = stocks
-        .Select(s =>
+        public async Task<List<object>> GetAveragePricesAsync()
         {
-         
-            if (s.Prices == null || s.Prices.Count == 0)
-                return null;
 
-            // calculate average price
-            var avg = s.Prices.Average(p => p.Price);
+            var stocks = await _stockRepository.GetAllAsync();
 
-          
-            return new
-            {
-                Symbol = s.Symbol,
-                AveragePrice = Math.Round(avg, 2)
-            };
-        })
-    
-        .Where(x => x != null)
-      
-        .Cast<object>()
-        .ToList();
+            var result = stocks
+                .Select(s =>
+                {
 
-    return result;
-}
+                    if (s.Prices == null || s.Prices.Count == 0)
+                        return null;
+
+                    // calculate average price
+                    var avg = s.Prices.Average(p => p.Price);
+
+
+                    return new
+                    {
+                        Symbol = s.Symbol,
+                        AveragePrice = Math.Round(avg, 2)
+                    };
+                })
+
+                .Where(x => x != null)
+
+                .Cast<object>()
+                .ToList();
+
+            return result;
+        }
     }
 }

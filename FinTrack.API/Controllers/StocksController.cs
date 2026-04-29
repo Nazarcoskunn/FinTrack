@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinTrack.API.Controllers
 {
+    // Controller layer handles HTTP requests and responses.
+    // I receive requests here and pass them to the service layer.
+
     [Route("api/[controller]")]
     [ApiController]
     public class StocksController : ControllerBase
@@ -57,10 +60,10 @@ namespace FinTrack.API.Controllers
             return Ok(result);
         }
         [HttpGet("average-prices")]
-public async Task<IActionResult> GetAveragePrices()
-{
-    var result = await _stockService.GetAveragePricesAsync();
-    return Ok(result);
-}
+        public async Task<IActionResult> GetAveragePrices()
+        {
+            var result = await _stockService.GetAveragePricesAsync();
+            return Ok(result);
+        }
     }
 }
