@@ -2,6 +2,7 @@ import { useState } from "react";
 import StockForm from "./components/StockForm";
 import StockList from "./components/StockList";
 import AveragePrices from "./components/AveragePrices";
+import "./App.css";
 
 
 function App() {
@@ -11,16 +12,26 @@ function App() {
     setRefresh(!refresh);
   };
 
-  return (
-    <div style={{ padding: "20px" }}>
+return (
+  <div className="app">
+    <div className="header">
       <h1>FinTrack</h1>
+      <p>Financial data tracking and analysis dashboard</p>
+    </div>
 
+    <div className="card">
       <StockForm onStockAdded={handleStockAdded} />
+    </div>
 
+    <div className="card">
       <StockList key={refresh} />
+    </div>
+
+    <div className="card">
       <AveragePrices key={refresh} />
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
