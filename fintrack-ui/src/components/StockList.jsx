@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
+
+// This component displays all stocks
+// It also allows delete and price refresh actions
+
 function StockList() {
   const [stocks, setStocks] = useState([]);
 

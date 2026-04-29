@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
+// This component shows average prices of stocks
+// I use this to demonstrate that I can process data, not just fetch it
+
 function AveragePrices({ refresh }) {
   const [averagePrices, setAveragePrices] = useState([]);
 

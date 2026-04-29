@@ -1,6 +1,10 @@
 import { useState } from "react";
 import api from "../api";
 
+// This component shows simple dashboard stats
+// I calculate highest and lowest average prices to give quick insight
+
+
 function StockForm({ onStockAdded }) {
   const [symbol, setSymbol] = useState("");
   const [name, setName] = useState("");
