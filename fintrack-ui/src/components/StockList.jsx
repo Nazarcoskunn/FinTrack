@@ -73,11 +73,11 @@ function StockList() {
                   : "-"}
               </td>
               <td>
-                <button onClick={() => refreshPrice(stock.symbol)}>
+                <button  className="btn btn-success" onClick={() => refreshPrice(stock.symbol)}>
                   Refresh
                 </button>
 
-                <button onClick={() => deleteStock(stock.id)}>
+                <button className="btn btn-danger" onClick={() => deleteStock(stock.id)}>
                   Delete
                 </button>
               </td>
