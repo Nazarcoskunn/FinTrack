@@ -4,7 +4,20 @@ import api from "../api";
 function StockList() {
   const [stocks, setStocks] = useState([]);
 
-  const fetchStocks = async () => {
+  useEffect(() => {
+    const fetchStocks = async () => {
+      try {
+        const res = await api.get("/stocks");
+        setStocks(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchStocks();
+  }, []);
+
+  const reloadStocks = async () => {
     try {
       const res = await api.get("/stocks");
       setStocks(res.data);
@@ -12,49 +25,38 @@ function StockList() {
       console.error(err);
     }
   };
-
- useEffect(() => {
-  const loadStocks = async () => {
-    try {
-      const res = await api.get("/stocks");
-      setStocks(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  loadStocks();
-}, []);
 
   const deleteStock = async (id) => {
     try {
       await api.delete(`/stocks/${id}`);
-      fetchStocks();
+      reloadStocks();
     } catch (err) {
       console.error(err);
-      alert("Silme hatası");
+      alert("Delete error");
     }
   };
 
   const refreshPrice = async (symbol) => {
     try {
       await api.post(`/stocks/${symbol}/refresh-price`);
-      alert("Fiyat güncellendi");
+      reloadStocks();
     } catch (err) {
       console.error(err);
-      alert("Fiyat çekme hatası");
+      alert("Price refresh error");
     }
   };
 
   return (
     <div>
-      <h2>Stock List</h2>
+      <h2>Stocks</h2>
 
-      <table border="1">
+      <table>
         <thead>
           <tr>
             <th>Symbol</th>
             <th>Name</th>
+            <th>Last Price</th>
+            <th>Last Updated</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -64,9 +66,15 @@ function StockList() {
             <tr key={stock.id}>
               <td>{stock.symbol}</td>
               <td>{stock.name}</td>
+              <td>{stock.lastPrice ? `$${stock.lastPrice}` : "-"}</td>
+              <td>
+                {stock.lastUpdated
+                  ? new Date(stock.lastUpdated).toLocaleString()
+                  : "-"}
+              </td>
               <td>
                 <button onClick={() => refreshPrice(stock.symbol)}>
-                  Refresh Price
+                  Refresh
                 </button>
 
                 <button onClick={() => deleteStock(stock.id)}>
