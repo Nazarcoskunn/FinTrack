@@ -28,22 +28,56 @@ namespace FinTrack.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateStockDto dto)
         {
-            await _stockService.AddStockAsync(dto);
-            return Ok("Stock added successfully.");
+            try
+            {
+                await _stockService.AddStockAsync(dto);
+                return Ok("Stock added successfully.");
+            }
+            catch (Exception)
+            {
+                return BadRequest(new
+                {
+                    message = "Error while adding stock."
+                });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _stockService.DeleteStockAsync(id);
-            return Ok("Stock deleted successfully.");
+            try
+            {
+                await _stockService.DeleteStockAsync(id);
+                return Ok("Stock deleted successfully.");
+            }
+            catch (Exception)
+            {
+                return BadRequest(new
+                {
+                    message = "Error while deleting stock."
+                });
+            }
         }
-
         [HttpPost("{symbol}/refresh-price")]
         public async Task<IActionResult> RefreshPrice(string symbol)
         {
-            var price = await _stockService.RefreshStockPriceAsync(symbol);
-            return Ok(new { Symbol = symbol.ToUpper(), Price = price });
+            try
+            {
+                var price = await _stockService.RefreshStockPriceAsync(symbol);
+
+                return Ok(new
+                {
+                    Symbol = symbol.ToUpper(),
+                    Price = price
+                });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Error occurred while fetching stock price."
+                });
+            }
         }
 
         [HttpGet("top-gainers")]
