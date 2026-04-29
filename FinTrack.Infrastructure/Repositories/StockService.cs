@@ -52,7 +52,7 @@ namespace FinTrack.Infrastructure.Services
         }
         public async Task<decimal> RefreshStockPriceAsync(string symbol)
         {
-             var apiKey = _config["Finnhub:ApiKey"];
+             var apiKey = Environment.GetEnvironmentVariable("FINNHUB_API_KEY");
 
              var url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={apiKey}";
 
