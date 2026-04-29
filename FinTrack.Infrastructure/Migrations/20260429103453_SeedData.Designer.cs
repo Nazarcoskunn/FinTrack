@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinTrack.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260428091650_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260429103453_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,29 @@ namespace FinTrack.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Stocks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Apple",
+                            Symbol = "AAPL"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Microsoft",
+                            Symbol = "MSFT"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tesla",
+                            Symbol = "TSLA"
+                        });
                 });
 
             modelBuilder.Entity("FinTrack.Domain.Entities.StockPrice", b =>
