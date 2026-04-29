@@ -1,8 +1,10 @@
 import { useState } from "react";
 import StockForm from "./components/StockForm";
 import StockList from "./components/StockList";
+import DashboardStats from "./components/DashboardStats";
 import AveragePrices from "./components/AveragePrices";
 import "./App.css";
+
 
 
 function App() {
@@ -30,6 +32,10 @@ return (
     <div className="card">
    <AveragePrices refresh={refresh} /> 
     </div>
+
+    <div className="card">
+  <DashboardStats />
+</div>
   </div>
 );
 }
