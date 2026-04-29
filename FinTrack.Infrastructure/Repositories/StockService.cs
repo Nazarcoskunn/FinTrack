@@ -23,18 +23,26 @@ namespace FinTrack.Infrastructure.Services
             _config = config;
         }
 
-        public async Task<List<StockDto>> GetAllStocksAsync()
+public async Task<List<StockDto>> GetAllStocksAsync()
+{
+    var stocks = await _stockRepository.GetAllAsync();
+
+    return stocks.Select(s =>
+    {
+        var lastPrice = s.Prices
+            .OrderByDescending(p => p.PriceDate)
+            .FirstOrDefault();
+
+        return new StockDto
         {
-            var stocks = await _stockRepository.GetAllAsync();
-
-            return stocks.Select(s => new StockDto
-            {
-                Id = s.Id,
-                Symbol = s.Symbol,
-                Name = s.Name
-            }).ToList();
-        }
-
+            Id = s.Id,
+            Symbol = s.Symbol,
+            Name = s.Name,
+            LastPrice = lastPrice?.Price,
+            LastUpdated = lastPrice?.PriceDate
+        };
+    }).ToList();
+}
         public async Task AddStockAsync(CreateStockDto dto)
         {
             var stock = new Stock
