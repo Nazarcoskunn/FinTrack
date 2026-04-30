@@ -1,3 +1,7 @@
+# FinTrack
+
+A fullstack financial data tracking and analysis application built with .NET and React.
+
 ---
 
 ## Project Purpose
@@ -21,52 +25,33 @@ The reason I chose this is to keep the code organized and separate responsibilit
 ## Layers
 
 ### API
-
-- Handles incoming HTTP requests  
-- Calls the service layer  
-- Returns responses  
-
-I kept this layer simple and did not include business logic here.
-
----
+- Handles incoming HTTP requests
+- Calls the service layer
+- Returns responses
+- No business logic is implemented here
 
 ### Application
-
-- Contains interfaces  
-- Contains DTOs  
-
-This helps reduce dependency between layers.
-
----
+- Contains interfaces
+- Contains DTOs
+- Helps reduce dependency between layers
 
 ### Domain
-
-- Stock  
-- StockPrice  
-
-This is where the core data structure is defined.
-
----
+- Stock
+- StockPrice
+- Defines the core data structure
 
 ### Infrastructure
 
-This is where the main operations are implemented.
-
 #### Repository
-
-- Handles database operations  
-- Contains CRUD logic  
-
-This layer communicates directly with the database.
-
----
+- Handles database operations
+- Contains CRUD logic
+- Communicates directly with the database
 
 #### Service
-
-- Contains business logic  
-- Fetches data from external API  
-- Processes data  
-- Performs analytics  
+- Contains business logic
+- Fetches data from external API
+- Processes data
+- Performs analytics
 
 Controllers do not access the database directly, everything goes through the service layer.
 
@@ -74,34 +59,32 @@ Controllers do not access the database directly, everything goes through the ser
 
 ## Repository / Service Separation
 
-- Repository → data access  
-- Service → business logic  
+- Repository → data access
+- Service → business logic
 
 This separation makes the code:
-
-- More organized  
-- Easier to understand  
-- Easier to maintain  
+- More organized
+- Easier to understand
+- Easier to maintain
 
 ---
 
 ## Database
 
-I used SQL Server.
-
-- Connected using Entity Framework Core  
-- Created Stock and StockPrice tables  
-- Stored price history  
+- SQL Server is used
+- Connected using Entity Framework Core
+- Stock and StockPrice tables created
+- Price history is stored
 
 ---
 
 ## External API
 
-I used Finnhub API.
+Finnhub API is used.
 
-- Fetching stock prices  
-- Parsing the response  
-- Saving data to database  
+- Fetching stock prices
+- Parsing API responses
+- Saving data to the database
 
 ---
 
@@ -121,10 +104,7 @@ GET     /api/stocks/average-prices
 
 I added a simple analysis:
 
-Average price calculation.
-
-- Takes historical prices  
-- Calculates average  
+- Average price calculation
 
 This shows that I can process data, not just store it.
 
@@ -132,121 +112,96 @@ This shows that I can process data, not just store it.
 
 ## Error Handling
 
-- Used try-catch in controllers  
-- Did not expose raw exceptions  
-- Returned clean responses  
+- Used try-catch in controllers
+- Did not expose raw exceptions
+- Returned clean responses
 
 ---
 
 ## Security
 
-API key is not stored in the project.
+The API key is not stored in the project.
 
-Used environment variable:
+It is handled using an environment variable:
 
-setx FINNHUB_API_KEY "YOUR_API_KEY"
+$env:FINNHUB_API_KEY="YOUR_API_KEY"
 
 ---
 
 ## Running the Backend
 
-To run the backend, first make sure that SQL Server is installed and running.
+Make sure SQL Server is installed and running.
 
-1. Configure the database connection
+### 1. Configure the database connection
 
-Open the following file:
+Open:
 
 FinTrack.API/appsettings.json
 
-Update the connection string according to your SQL Server configuration:
+Update the connection string:
 
-Example:
-
-“ConnectionStrings”: {
-“DefaultConnection”: “Server=YOUR_SERVER;Database=FinTrackDb;Trusted_Connection=True;TrustServerCertificate=True;”
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER;Database=FinTrackDb;Trusted_Connection=True;TrustServerCertificate=True;"
 }
 
 Replace YOUR_SERVER with your own SQL Server name.
 
-⸻
+---
 
-2. Set the Finnhub API key
+### 2. Set the API key
 
-This project uses the Finnhub API to fetch stock prices.
-The API key is not stored in the project for security reasons.
+$env:FINNHUB_API_KEY="YOUR_API_KEY"
 
-Set it as an environment variable:
+---
 
-Windows (PowerShell):
+### 3. Apply migrations
 
-$env:FINNHUB_API_KEY=“YOUR_API_KEY”
-⸻
+dotnet ef database update --project FinTrack.Infrastructure --startup-project FinTrack.API
 
-3. Apply database migrations
+---
 
-From the project root folder, run:
+### 4. Run backend
 
-dotnet ef database update –project FinTrack.Infrastructure –startup-project FinTrack.API
+dotnet run --project FinTrack.API
 
-This will create the database and required tables automatically.
+---
 
-⸻
-
-4. Run the backend API
-
-Run the following command:
-
-dotnet run –project FinTrack.API
-
-⸻
-
-5. Open Swagger
-
-After the backend starts, you can access the API using Swagger:
+### 5. Swagger
 
 http://localhost:5025/swagger
-
-⸻
-
-The backend must be running in order for the frontend to fetch data.
-
 
 ---
 
 ## Frontend
 
-In this project, I developed a simple user interface using React.
+I developed a simple UI using React.
 
-My goal was to consume the backend API I built and present the data to the user, while also allowing basic interactions through the UI.
+Features:
 
-On the frontend side, I implemented:
+- Display stock list
+- Add stock
+- Delete stock
+- Refresh stock price
+- Show last price and update time
+- Show average prices
+- Show highest / lowest values
+- Chart visualization
 
-- Displaying the stock list
-- Adding new stocks
-- Deleting stocks
-- Refreshing stock prices
-- Showing last price and last updated time of each stock
-- Displaying average price data
-- Showing highest and lowest average values in a dashboard
-- Adding a simple chart to visualize average prices
+Axios is used for API communication.
 
-I used Axios to connect the React application to the backend API.
+---
 
-The frontend project is located in a separate folder:
+## Running the Frontend
 
-### Running the frontend:
+cd fintrack-ui  
+npm install  
+npm run dev  
 
-cd fintrack-ui
-<br/>
-npm install
-<br/>
-npm run dev
-
-The frontend runs by default at:
+Frontend runs at:
 
 http://localhost:5173
 
-If the backend is not running, the frontend will not be able to fetch data.
+The backend must be running for the frontend to work.
 
 ---
 
@@ -254,10 +209,10 @@ If the backend is not running, the frontend will not be able to fetch data.
 
 In this project I:
 
-- Built a .NET Web API  
-- Used Onion Architecture  
-- Used SQL Server + EF Core  
-- Integrated external API  
-- Stored and processed data  
-- Implemented analytics  
-- Applied clean architecture principles  
+- Built a .NET Web API
+- Used Onion Architecture
+- Used SQL Server + EF Core
+- Integrated external API
+- Stored and processed data
+- Implemented analytics
+- Built a React frontend
