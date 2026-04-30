@@ -153,3 +153,14 @@ tr:hover {
   color: #22c55e;
   font-size: 18px;
 }
+.chart-card {
+  margin-top: 24px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.chart-card h3 {
+  margin-top: 0;
+}
