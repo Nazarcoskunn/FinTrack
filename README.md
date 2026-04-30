@@ -148,18 +148,68 @@ setx FINNHUB_API_KEY "YOUR_API_KEY"
 
 ---
 
-## Running the Project
+## Running the Backend
 
-- Update connection string  
-- Set API key  
+To run the backend, first make sure that SQL Server is installed and running.
 
-Run:
+1. Configure the database connection
 
-dotnet run --project FinTrack.API
+Open the following file:
 
-Swagger:
+FinTrack.API/appsettings.json
+
+Update the connection string according to your SQL Server configuration:
+
+Example:
+
+“ConnectionStrings”: {
+“DefaultConnection”: “Server=YOUR_SERVER;Database=FinTrackDb;Trusted_Connection=True;TrustServerCertificate=True;”
+}
+
+Replace YOUR_SERVER with your own SQL Server name.
+
+⸻
+
+2. Set the Finnhub API key
+
+This project uses the Finnhub API to fetch stock prices.
+The API key is not stored in the project for security reasons.
+
+Set it as an environment variable:
+
+Windows (PowerShell):
+
+$env:FINNHUB_API_KEY=“YOUR_API_KEY”
+⸻
+
+3. Apply database migrations
+
+From the project root folder, run:
+
+dotnet ef database update –project FinTrack.Infrastructure –startup-project FinTrack.API
+
+This will create the database and required tables automatically.
+
+⸻
+
+4. Run the backend API
+
+Run the following command:
+
+dotnet run –project FinTrack.API
+
+⸻
+
+5. Open Swagger
+
+After the backend starts, you can access the API using Swagger:
 
 http://localhost:5025/swagger
+
+⸻
+
+The backend must be running in order for the frontend to fetch data.
+
 
 ---
 
