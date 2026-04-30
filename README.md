@@ -187,7 +187,9 @@ The frontend project is located in a separate folder:
 ### Running the frontend:
 
 cd fintrack-ui
+<br/>
 npm install
+<br/>
 npm run dev
 
 The frontend runs by default at:
