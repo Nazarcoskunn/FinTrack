@@ -163,6 +163,41 @@ http://localhost:5025/swagger
 
 ---
 
+## Frontend
+
+In this project, I developed a simple user interface using React.
+
+My goal was to consume the backend API I built and present the data to the user, while also allowing basic interactions through the UI.
+
+On the frontend side, I implemented:
+
+- Displaying the stock list
+- Adding new stocks
+- Deleting stocks
+- Refreshing stock prices
+- Showing last price and last updated time of each stock
+- Displaying average price data
+- Showing highest and lowest average values in a dashboard
+- Adding a simple chart to visualize average prices
+
+I used Axios to connect the React application to the backend API.
+
+The frontend project is located in a separate folder:
+
+### Running the frontend:
+
+cd fintrack-ui
+npm install
+npm run dev
+
+The frontend runs by default at:
+
+http://localhost:5173
+
+If the backend is not running, the frontend will not be able to fetch data.
+
+---
+
 ## Summary
 
 In this project I:
