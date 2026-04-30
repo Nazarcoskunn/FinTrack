@@ -32,13 +32,13 @@ function DashboardStats() {
   return (
     <div className="stats-grid">
       <div className="stat-card">
-        <span>Highest Average</span>
+       <span>📈 Highest Average</span>
         <h3>{highest ? highest.symbol : "-"}</h3>
         <p>{highest ? `$${highest.averagePrice}` : "-"}</p>
       </div>
 
       <div className="stat-card">
-        <span>Lowest Average</span>
+        <span>📉 Lowest Average</span>
         <h3>{lowest ? lowest.symbol : "-"}</h3>
         <p>{lowest ? `$${lowest.averagePrice}` : "-"}</p>
       </div>
