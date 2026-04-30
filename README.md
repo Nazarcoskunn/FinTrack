@@ -174,20 +174,23 @@ http://localhost:5025/swagger
 
 ## Frontend
 
-I developed a simple UI using React.
+In this project, I developed a simple user interface using React.
 
-Features:
+My goal was to consume the backend API I built and present the data to the user, while also allowing basic interactions through the UI.
 
-- Display stock list
-- Add stock
-- Delete stock
-- Refresh stock price
-- Show last price and update time
-- Show average prices
-- Show highest / lowest values
-- Chart visualization
+On the frontend side, I implemented:
 
-Axios is used for API communication.
+Displaying the stock list
+Adding new stocks
+Deleting stocks
+Refreshing stock prices
+Showing last price and last updated time of each stock
+Displaying average price data
+Showing highest and lowest average values in a dashboard
+Adding a simple chart to visualize average prices
+I used Axios to connect the React application to the backend API.
+
+The frontend project is located in a separate folder:
 
 ---
 
